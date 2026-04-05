@@ -5,11 +5,7 @@ import { uploadToCloudinary, deleteFromCloudinary } from '../services/cloudinary
 
 const router = express.Router();
 
-const requireAuth = (req, res, next) => {
-    if (req.cookies.auth === 'true') next();
-    else res.status(401).json({ success: false, message: 'Unauthorized' });
-};
-router.use(requireAuth);
+
 
 router.get('/', async (req, res) => {
     try {
