@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const login = async (passcode) => {
-        const response = await api.post('/auth/login', { passcode });
+        const response = await api.post('/auth/verify-pin', { passcode });
         if (response.data.success) {
             setIsAuthenticated(true);
             return true;

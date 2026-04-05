@@ -10,6 +10,7 @@ import dueRoutes from './routes/dues.js';
 import stitchingRoutes from './routes/stitching.js';
 import dashboardRoutes from './routes/dashboard.js';
 import reportsRoutes from './routes/reports.js';
+import { requireAuth } from './middleware/requireAuth.js';
 
 dotenv.config();
 
@@ -21,17 +22,21 @@ const app = express();
 // Middleware
 app.use(cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:5173',
-    credentials: true // Allow cookies
+    credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Mount routers
+
+app.get("/", (req, res) => {
+    res.send("PayTrackr API is running 🚀");
+});
+
 app.use('/api/auth', authRoutes);
-app.use('/api/dues', dueRoutes);
-app.use('/api/stitching', stitchingRoutes);
-app.use('/api/dashboard', dashboardRoutes);
-app.use('/api/reports', reportsRoutes);
+app.use('/api/dues', requireAuth, dueRoutes);
+app.use('/api/stitching', requireAuth, stitchingRoutes);
+app.use('/api/dashboard', requireAuth, dashboardRoutes);
+app.use('/api/reports', requireAuth, reportsRoutes);
 
 const PORT = process.env.PORT || 5000;
 

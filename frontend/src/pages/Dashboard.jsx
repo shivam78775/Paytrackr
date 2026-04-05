@@ -29,6 +29,17 @@ const DashboardHome = () => {
         );
     }
 
+    if (!stats) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[50vh] p-4 text-center">
+                <p className="text-foreground/70 mb-4">Failed to load dashboard statistics. Please try refreshing or logging in again.</p>
+                <button onClick={() => window.location.reload()} className="btn-primary shadow-sm hover:opacity-90">
+                    Refresh
+                </button>
+            </div>
+        );
+    }
+
     return (
         <div className="p-4 sm:p-6 pb-24 space-y-6">
 
@@ -52,17 +63,17 @@ const DashboardHome = () => {
             </div>
 
             {/* Upcoming Deliveries Notification Panel */}
-            {stats.upcomingDeliveries && stats.upcomingDeliveries.length > 0 && (
+            {stats?.upcomingDeliveries?.length > 0 && (
                 <div className="card p-0 overflow-hidden border-orange-500/30">
                     <div className="bg-orange-500/10 px-4 py-3 flex items-center gap-2 border-b border-orange-500/20">
                         <Bell className="w-5 h-5 text-orange-500" />
                         <h3 className="font-bold text-orange-600 dark:text-orange-400">Upcoming Deliveries</h3>
                         <span className="ml-auto bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                            {stats.upcomingDeliveries.length}
+                            {stats?.upcomingDeliveries?.length || 0}
                         </span>
                     </div>
                     <div className="divide-y divide-border/50">
-                        {stats.upcomingDeliveries.map((delivery) => (
+                        {stats?.upcomingDeliveries?.map((delivery) => (
                             <Link key={delivery._id} to={`/dashboard/stitching/${delivery._id}`} className="px-4 py-3 flex items-center justify-between hover:bg-foreground/5 transition-colors">
                                 <div>
                                     <p className="font-semibold text-foreground line-clamp-1">{delivery.customerName}</p>
@@ -82,35 +93,35 @@ const DashboardHome = () => {
                 <div className="card p-4">
                     <TrendingUp className="w-5 h-5 text-red-500 mb-2" />
                     <p className="text-foreground/60 text-xs font-semibold uppercase tracking-wider mb-1">Total Pending</p>
-                    <h3 className="text-2xl font-bold text-foreground">₹{stats.totalPendingDueAmt.toLocaleString()}</h3>
+                    <h3 className="text-2xl font-bold text-foreground">₹{(stats?.totalPendingDueAmt || 0).toLocaleString()}</h3>
                 </div>
                 <div className="card p-4">
                     <TrendingUp className="w-5 h-5 text-green-500 mb-2" />
                     <p className="text-foreground/60 text-xs font-semibold uppercase tracking-wider mb-1">Paid This Wk</p>
-                    <h3 className="text-2xl font-bold text-foreground">₹{stats.totalPaidThisWeekAmt.toLocaleString()}</h3>
+                    <h3 className="text-2xl font-bold text-foreground">₹{(stats?.totalPaidThisWeekAmt || 0).toLocaleString()}</h3>
                 </div>
                 <div className="card p-4">
                     <TrendingUp className="w-5 h-5 text-blue-500 mb-2" />
                     <p className="text-foreground/60 text-xs font-semibold uppercase tracking-wider mb-1">Paid This Mo</p>
-                    <h3 className="text-2xl font-bold text-foreground">₹{stats.totalPaidThisMonthAmt.toLocaleString()}</h3>
+                    <h3 className="text-2xl font-bold text-foreground">₹{(stats?.totalPaidThisMonthAmt || 0).toLocaleString()}</h3>
                 </div>
 
                 <div className="card p-4">
                     <Users className="w-5 h-5 text-orange-500 mb-2" />
                     <p className="text-foreground/60 text-xs font-semibold uppercase tracking-wider mb-1">Pending Due Records</p>
-                    <h3 className="text-2xl font-bold text-foreground">{stats.totalPendingDueRecords}</h3>
+                    <h3 className="text-2xl font-bold text-foreground">{stats?.totalPendingDueRecords || 0}</h3>
                 </div>
                 <div className="card p-4">
                     <Scissors className="w-5 h-5 text-purple-500 mb-2" />
                     <p className="text-foreground/60 text-xs font-semibold uppercase tracking-wider mb-1">Pending Deliveries</p>
-                    <h3 className="text-2xl font-bold text-foreground">{stats.totalStitchingPendingDeliveries}</h3>
+                    <h3 className="text-2xl font-bold text-foreground">{stats?.totalStitchingPendingDeliveries || 0}</h3>
                 </div>
                 <div className="card p-4 col-span-2 sm:col-span-1 bg-foreground/5 border-none">
                     <Bell className="w-5 h-5 text-foreground/70 mb-2" />
                     <p className="text-foreground/60 text-xs font-semibold uppercase tracking-wider mb-1">Today's Activity</p>
                     <div className="flex flex-col gap-1 mt-2">
-                        <span className="text-sm font-semibold">{stats.todaysDueEntries} new dues</span>
-                        <span className="text-sm font-semibold">{stats.todaysStitchingOrders} new orders</span>
+                        <span className="text-sm font-semibold">{stats?.todaysDueEntries || 0} new dues</span>
+                        <span className="text-sm font-semibold">{stats?.todaysStitchingOrders || 0} new orders</span>
                     </div>
                 </div>
             </div>
